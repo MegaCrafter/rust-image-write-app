@@ -1,1 +1,1 @@
-web: ROCKET_PORT=80 ./target/release/image-write-app
+web: ./target/release/image-write-app
