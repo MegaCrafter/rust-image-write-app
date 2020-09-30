@@ -4,7 +4,7 @@
 extern crate rocket;
 
 use rocket::response::{self, Response, Responder};
-use rocket::http::ContentType;
+use rocket::http::{ContentType, Status};
 use rocket::Request;
 
 use std::str::FromStr;
@@ -13,6 +13,17 @@ use reqwest::blocking;
 
 mod response_image;
 use response_image::ResponseImage;
+
+struct ImageError(&str);
+
+impl<'a> Responder<'a> for ImageError {
+    fn respond_to(self, _: &Request) -> response::Result<'a> {
+        Response::build()
+            .status(Status::BadRequest)
+            .sized_body(self.0)
+            .ok()
+    }
+}
 
 impl<'a> Responder<'a> for ResponseImage {
     fn respond_to(self, _: &Request) -> response::Result<'a> {
