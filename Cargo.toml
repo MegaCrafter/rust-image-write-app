@@ -4,13 +4,11 @@ version = "0.1.0"
 authors = ["megacrafter"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 image = "0.23.6"
 imageproc = "0.21.0"
 rocket = "0.4.5"
-reqwest = { version = "0.10", features = ["blocking", "json"] }
+reqwest = { version = "0.10", features = ["blocking"] }
 futures = { version = "0.3.*" }
 bytes = "0.5.6"
 rusttype = "0.9.1"
