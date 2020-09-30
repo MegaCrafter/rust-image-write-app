@@ -25,8 +25,7 @@ impl<'a> Responder<'a> for ResponseImage {
 
 #[get("/?<x>&<y>&<size>&<text>&<url>")] 
 fn index(url: String, x: u32, y: u32, size: f32, text: String) -> Result<ResponseImage, &'static str> {
-    // let uri: &str = "http://w7.pngwing.com/pngs/94/962/png-transparent-social-media-computer-icons-facebook-inc-icon-design-social-media.png";
-
+    
     let resp = blocking::get(url.as_str());
     if let Err(_) = resp {
         return Err("Malformed URL");

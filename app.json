@@ -1,0 +1,16 @@
+{
+    "name": "rust-image-write-app",
+    "description": "Write text on images by requests.",
+    "keywords": [
+        "rust",
+        "image",
+        "text",
+        "write"
+    ],
+    "repository": "https://github.com/MegaCrafter/rust-image-write-app",
+    "buildpacks": [
+        {
+            "url": "emk/rust"
+        }
+    ]
+}
