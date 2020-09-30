@@ -24,7 +24,7 @@ impl<'a> Responder<'a> for ResponseImage {
 }
 
 #[get("/?<x>&<y>&<size>&<text>&<url>")] 
-fn index(url: String, x: u32, y: u32, size: f32, text: String) -> Result<ResponseImage, &'static str> {
+fn image(url: String, x: u32, y: u32, size: f32, text: String) -> Result<ResponseImage, &'static str> {
 
     let resp = blocking::get(url.as_str());
     if let Err(_) = resp {
@@ -38,7 +38,7 @@ fn index(url: String, x: u32, y: u32, size: f32, text: String) -> Result<Respons
     ResponseImage::new(buf, x, y, size, text)
 }
 
-#[get("/")]
+#[get("/github")]
 fn github() -> response::Result<'static> {
     Response::build()
         .status(rocket::http::Status::new(301, "Github Redirection"))
@@ -46,9 +46,15 @@ fn github() -> response::Result<'static> {
         .ok()
 }
 
+#[get("/")]
+fn index() -> String {
+    String::from("Still work in progress...")
+}
+
 fn main() {
     rocket::ignite()
+    .mount("/", routes![image])
+    .mount("/", routes![github])
     .mount("/", routes![index])
-    .mount("/github", routes![github])
     .launch();
 }
