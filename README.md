@@ -5,15 +5,13 @@ Write some text on a url based image with only requests. This is useful for url 
 The URL must be formatted like this:
 `https://image-write-app.herokuapp.com/?x=<x>&y=<y>&size=<fontsize>&text=<text>&url=<url>`
 
-**\<x>**: X position of the text
-
-**\<y>**: Y position of the text
-
-**\<fontsize>**: Font size of the text
-
-**\<text>**: Text itself
-
-**\<url>**: Base Image URL
+| Parameter       | Description            |
+| --------------- | ---------------------- |
+| **\<x>**        | X position of the text |
+| **\<y>**        | Y position of the text |
+| **\<fontsize>** | Font size of the text  |
+| **\<text>**     | Text itself            |
+| **\<url>**      | Base Image URL         |
 
 All parameters must be URL encoded. (You can use [a URL Encoder](https://www.urlencoder.org/))
 
