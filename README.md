@@ -20,3 +20,11 @@ The URL you provide has to return an image on request. (And yes you can provide 
 
 # Nested Example
 ![](http://image-write-app.herokuapp.com/?x=340&y=420&size=45.0&text=MegaCrafter&url=https%3A%2F%2Fimage-write-app.herokuapp.com%2F%3Fx%3D640%26y%3D420%26size%3D45.0%26text%3DMegaCrafter%26url%3Dhttps%3A%2F%2Fwww.pngitem.com%2Fpimgs%2Fm%2F346-3468947_images-rust-lang-ar21-rust-programming-language-logo.png)
+
+# TODO
+- Specifying colors for the text
+- Filters on the base image
+- Color-only images without url
+- Gradient-only images without url
+- Specifying fonts for the text
+- Drawing geometry other than text 
