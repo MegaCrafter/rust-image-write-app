@@ -25,7 +25,7 @@ impl<'a> Responder<'a> for ResponseImage {
 
 #[get("/?<x>&<y>&<size>&<text>&<url>")] 
 fn index(url: String, x: u32, y: u32, size: f32, text: String) -> Result<ResponseImage, &'static str> {
-    
+
     let resp = blocking::get(url.as_str());
     if let Err(_) = resp {
         return Err("Malformed URL");
@@ -38,8 +38,17 @@ fn index(url: String, x: u32, y: u32, size: f32, text: String) -> Result<Respons
     ResponseImage::new(buf, x, y, size, text)
 }
 
+#[get("/")]
+fn github() -> response::Result<'static> {
+    Response::build()
+        .status(rocket::http::Status::new(301, "Github Redirection"))
+        .header(rocket::http::Header::new("Location", "https://github.com/MegaCrafter/rust-image-write-app"))
+        .ok()
+}
+
 fn main() {
     rocket::ignite()
     .mount("/", routes![index])
+    .mount("/github", routes![github])
     .launch();
 }
