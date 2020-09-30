@@ -1,11 +1,18 @@
 use image::ImageOutputFormat::Png;
 use image::io::Reader;
 
+use rocket::response::{self, Response, Responder};
+use rocket::http::ContentType;
+use rocket::Request;
+
 use imageproc::drawing::draw_text_mut;
 
 use std::io::{Read, Cursor, Error};
+use std::str::FromStr;
 
 use rusttype::{Font, Scale};
+
+use crate::image_error::ImageError;
 
 pub struct ResponseImage {
     bytes: Vec<u8>,
@@ -13,19 +20,19 @@ pub struct ResponseImage {
 }
 
 impl ResponseImage {
-    pub fn new(buf: bytes::Bytes, x: u32, y: u32, size: f32, text: String) -> Result<ResponseImage, &'static str> {
+    pub fn new(buf: bytes::Bytes, x: u32, y: u32, size: f32, text: String) -> Result<ResponseImage, ImageError> {
         if buf.is_empty() {
-            return Err("Buffer is empty!");
+            return Err(ImageError("Buffer is empty!"));
         }
 
         let image = Reader::new(Cursor::new(&buf)).with_guessed_format();
         if let Err(_) = image {
-            return Err("Unsupported image format");
+            return Err(ImageError("Unsupported image format"));
         }
         
         let image = image.unwrap().decode();
         if let Err(_) = image {
-            return Err("Cannot decode image");
+            return Err(ImageError("Cannot decode image"));
         }
 
         let mut image = image.unwrap();
@@ -64,5 +71,14 @@ impl Read for ResponseImage {
         self.pointer += counter;
 
         Ok(counter)
+    }
+}
+
+impl<'a> Responder<'a> for ResponseImage {
+    fn respond_to(self, _: &Request) -> response::Result<'a> {
+        Response::build()
+            .header(ContentType::from_str("image/png").unwrap())
+            .streamed_body(self)
+            .ok()
     }
 }
