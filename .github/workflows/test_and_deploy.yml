@@ -1,0 +1,33 @@
+name: Test and push to heroku
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Build
+      run: cargo build --verbose
+      
+    - name: Run tests
+      run: cargo test --verbose
+      
+    - name: Deploy to Heroku
+      uses: AkhileshNS/heroku-deploy@v3.5.6
+      with:
+        # This will be used for authentication. You can find it in your heroku homepage account settings
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        # Email that you use with heroku
+        heroku_email: megacrafterjava@gmail.com
+        # The appname to use for deploying/updating
+        heroku_app_name: image-write-app
+        # An optional buildpack to use when creating the heroku application
+        buildpack: emk/rust
