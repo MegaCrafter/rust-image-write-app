@@ -42,10 +42,13 @@ fn index() -> String {
     String::from("Still work in progress...")
 }
 
-fn main() {
+fn rocket() -> rocket::Rocket {
     rocket::ignite()
     .mount("/", routes![image])
     .mount("/", routes![github])
     .mount("/", routes![index])
-    .launch();
+}
+
+fn main() {
+    rocke().launch();
 }
