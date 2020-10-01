@@ -3,8 +3,7 @@
 #[macro_use] 
 extern crate rocket;
 
-use rocket::response::{self, Response};
-use rocket::http::{Status, Header};
+use rocket::response::{self};
 
 mod image_error;
 mod response_image;
@@ -17,6 +16,8 @@ use reqwest::blocking;
 #[get("/?<x>&<y>&<size>&<text>&<url>")] 
 fn image(url: String, x: u32, y: u32, size: f32, text: String) -> Result<ResponseImage, ImageError> {
 
+    // We need a blocking request because the image()
+    // function is called by Rocket and is already async by itself.
     let resp = blocking::get(url.as_str());
     if let Err(_) = resp {
         return Err(ImageError("Malformed URL"));
@@ -24,21 +25,22 @@ fn image(url: String, x: u32, y: u32, size: f32, text: String) -> Result<Respons
 
     let resp = resp.unwrap();
 
+    // Read the raw bytes from the response to get the image.
     let buf = resp.bytes().unwrap();
     
+    // Let ResponseImage do all the other image logic.
     ResponseImage::new(buf, x, y, size, text)
 }
 
 #[get("/github")]
-fn github() -> response::Result<'static> {
-    Response::build()
-        .status(Status::new(301, "Github Redirection"))
-        .header(Header::new("Location", "https://github.com/MegaCrafter/rust-image-write-app"))
-        .ok()
+fn github() -> response::Redirect {
+    // Redirecting to the github page
+    response::Redirect::to("https://github.com/MegaCrafter/rust-image-write-app")
 }
 
 #[get("/")]
 fn index() -> String {
+    // TODO: Add changelog things (static pages?)
     String::from("Still work in progress...")
 }
 
@@ -49,6 +51,9 @@ fn rocket() -> rocket::Rocket {
     .mount("/", routes![index])
 }
 
+#[cfg(test)]
+mod test;
+
 fn main() {
-    rocke().launch();
+    rocket().launch();
 }
