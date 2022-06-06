@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 image = "0.23.6"
 imageproc = "0.21.0"
-rocket = "0.4.5"
+rocket = "0.4.7"
 reqwest = { version = "0.10", features = ["blocking"] }
 futures = { version = "0.3.*" }
 bytes = "0.5.6"
